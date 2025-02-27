@@ -1,9 +1,9 @@
-"use client"
-import Link from "next/link"
-import { Menu, FileText, User, Settings, LogOut } from "lucide-react"
+"use client";
+import Link from "next/link";
+import { Menu, FileText, User, Settings, LogOut } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,16 +12,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NavbarProps {
-  title?: string
-  buttonTitle?: string
-  buttonLink?: string
-  routes?: { name: string; path: string }[]
-  className?: string
+  title?: string;
+  buttonTitle?: string;
+  buttonLink?: string;
+  routes?: { name: string; path: string }[];
+  className?: string;
 }
 
 export function Navbar({
@@ -32,11 +37,21 @@ export function Navbar({
   className,
 }: NavbarProps) {
   return (
-    <header className={cn("sticky top-0 z-50 w-full border-b bg-background", className)}>
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b bg-background",
+        className
+      )}
+    >
       <div className="container flex h-16 items-center justify-between">
-        <div >
+        <div className="flex gap-8">
           <div className="flex items-center gap-2">
-            <MobileNav title={title} routes={routes} buttonTitle={buttonTitle} buttonLink={buttonLink} />
+            <MobileNav
+              title={title}
+              routes={routes}
+              buttonTitle={buttonTitle}
+              buttonLink={buttonLink}
+            />
             <Link href="/" className="flex items-center gap-2">
               <FileText className="h-6 w-6 text-primary" />
               <span className="text-xl font-bold">{title}</span>
@@ -45,12 +60,15 @@ export function Navbar({
 
           <nav className="hidden md:flex items-center gap-6">
             {routes.map((route) => (
-              <Link key={route.path} href={route.path ?? "#"} className="text-sm font-medium transition-colors hover:text-primary">
+              <Link
+                key={route.path}
+                href={route.path ?? "#"}
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
                 {route.name}
               </Link>
             ))}
           </nav>
-
         </div>
         <div className="flex items-start gap-4">
           <Link href={buttonLink ?? "#"} className="hidden md:block">
@@ -60,7 +78,7 @@ export function Navbar({
         </div>
       </div>
     </header>
-  )
+  );
 }
 
 function MobileNav({ title, routes, buttonTitle, buttonLink }: NavbarProps) {
@@ -82,7 +100,10 @@ function MobileNav({ title, routes, buttonTitle, buttonLink }: NavbarProps) {
         <nav className="flex flex-col gap-4 px-2">
           {routes?.map((route) => (
             <SheetClose asChild key={route.path}>
-              <Link href={route.path} className="flex py-2 text-sm font-medium transition-colors hover:text-primary">
+              <Link
+                href={route.path}
+                className="flex py-2 text-sm font-medium transition-colors hover:text-primary"
+              >
                 {route.name}
               </Link>
             </SheetClose>
@@ -95,14 +116,18 @@ function MobileNav({ title, routes, buttonTitle, buttonLink }: NavbarProps) {
         </nav>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
 
 function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-8 w-8 rounded-full">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative h-8 w-8 rounded-full"
+        >
           <Avatar className="h-8 w-8">
             <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
             <AvatarFallback>U</AvatarFallback>
@@ -113,7 +138,9 @@ function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">User</p>
-            <p className="text-xs leading-none text-muted-foreground">user@example.com</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              user@example.com
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -138,5 +165,5 @@ function UserNav() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

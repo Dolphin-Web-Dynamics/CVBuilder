@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import ResumeDisplay from '@/components/ResumeDisplay';
+import ResumeDisplay from "@/components/ResumeDisplay";
 
 const ResumePage: React.FC = () => {
-    return (
-        <div>
-            <ResumeDisplay />
-        </div>
-    );
+  return <ResumeDisplay />;
 };
 
 export default ResumePage;

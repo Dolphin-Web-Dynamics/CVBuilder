@@ -1,11 +1,11 @@
 // app/layout.tsx
 
-'use client';
+"use client";
 
-import './globals.css';
-import { ResumeProvider } from '@/context/ResumeContext';
+import "./globals.css";
+import { ResumeProvider } from "@/context/ResumeContext";
 // import Link from 'next/link';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from "@/components/navbar";
 export default function RootLayout({
   children,
 }: {
@@ -14,21 +14,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gray-100">
-      <div className="min-h-screen flex flex-col">      
-        <Navbar 
-        className="px-4"
-        routes={
-          [
-            {name: 'Home', path: '/'},
-            {name: 'Resume', path: '/resume'},
-            // {name: 'Preview', path: '/preview'}
-          ]
-        }
-        buttonLink='/resume'
-        /> 
-        <ResumeProvider>
-        <main className="flex-1 container py-8">{children}</main>
-        </ResumeProvider>
+        <div className="min-h-screen flex flex-col">
+          <Navbar
+            className="px-4 print:hidden"
+            routes={[
+              { name: "Home", path: "/" },
+              { name: "Resume", path: "/resume" },
+              // {name: 'Preview', path: '/preview'}
+            ]}
+            buttonLink="/resume"
+          />
+          <ResumeProvider>
+            <main className="flex-1  py-2 mx-2 ">{children}</main>
+          </ResumeProvider>
         </div>
       </body>
     </html>
