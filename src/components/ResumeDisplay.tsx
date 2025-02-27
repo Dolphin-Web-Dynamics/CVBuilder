@@ -1,45 +1,17 @@
-// components/ResumeDisplay.tsx
-
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import type React from "react";
+import { useContext, useState } from "react";
 import { ResumeContext } from "@/context/ResumeContext";
 import { ClassicTemplate, ModernTemplate, CustomTemplate } from "./templates";
-import { PrinterIcon } from "@heroicons/react/24/solid";
+import { PrinterIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import SidebarPanel from "./SidebarPanel";
+import MobileSidebar from "./MobileSidebar";
 
 const ResumeDisplay: React.FC = () => {
   const { resumeData } = useContext(ResumeContext);
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
-
-  // Determine if the device is considered a desktop.
-  useEffect(() => {
-    const checkIfDesktop = () => {
-      // You can adjust the breakpoint (here: 1024px) as needed.
-      setIsDesktop(window.innerWidth >= 1280);
-    };
-
-    checkIfDesktop();
-    window.addEventListener("resize", checkIfDesktop);
-    return () => window.removeEventListener("resize", checkIfDesktop);
-  }, []);
-
-  // If not on desktop, show a message indicating that the app is supported on desktops only.
-  if (!isDesktop) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 animate-pulse">
-          Desktop Only
-        </h1>
-        <p className="text-lg text-gray-600 mb-2">
-          This resume builder is supported on desktop devices only.
-        </p>
-        <p className="text-sm text-gray-500">
-          Please switch to a desktop computer to access all features.
-        </p>
-      </div>
-    );
-  }
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
+    useState<boolean>(false);
 
   const renderTemplate = () => {
     switch (resumeData.selectedTemplate) {
@@ -58,31 +30,55 @@ const ResumeDisplay: React.FC = () => {
     window.print();
   };
 
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
+
   return (
-    <div className="flex gap-2">
-      {/* Left Panel: Sidebar with selectors */}
-      <div className="col-span-1 print:hidden">
+    <div className="flex flex-col xl:flex-row gap-2">
+      {/* Desktop Sidebar */}
+      <div className="hidden xl:block print:hidden">
         <SidebarPanel />
       </div>
 
-      {/* Right Panel: Resume Preview */}
-      <div className="">
-        <div className="bg-gray-100 min-h-screen w-[calc(8.5in)] print:w-full print:m-0 grid">
+      {/* Mobile Sidebar Toggle Button */}
+      <div className="xl:hidden fixed bottom-4 right-4 z-50 print:hidden">
+        <button
+          onClick={toggleMobileSidebar}
+          className="bg-blue-500 text-white p-2 rounded-full shadow-md"
+          aria-label="Toggle Sidebar"
+        >
+          <Bars3Icon className="h-6 w-6" />
+        </button>
+      </div>
+
+      {/* Mobile Sidebar */}
+      <MobileSidebar
+        isOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
+      />
+
+      {/* Resume Preview */}
+      <div className="w-full flex justify-center">
+        <div className="bg-gray-100 min-h-screen xl:w-[calc(8.5in)]  print:m-0 grid">
           {/* Print button */}
           <div className="flex justify-end print:hidden">
             <button
               onClick={handlePrint}
-              className="fixed bottom-8 mr-2 flex items-center bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              className="fixed bottom-4 left-4 xl:bottom-8 xl:left-auto xl:right-4 flex items-center bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition shadow-md"
               aria-label="Print Resume"
             >
-              <PrinterIcon className="h-5 w-5 mr-2" />
-              Print Resume
+              <PrinterIcon className="h-5 w-5 mr-2 z-50" />
+              <span className="hidden sm:inline">Print Resume</span>
             </button>
           </div>
-          <div className="bg-white p-[.5in] rounded-md print:visible print:[&_*]:visible max-w-[8in] w-full">
+
+          {/* Resume Preview Container */}
+          <div className="bg-white mx-auto my-4  p-[.5in] rounded-md print:visible print:[&_*]:visible print:w-full w-[8in] overflow-auto shadow-md print:shadow-none">
             <div
-              className="w-full print:absolute print:left-0 print:top-0 print:w-full"
-              style={{ padding: `${resumeData.resumeMargin || 0.1}in` }}
+              // className="w-full print:absolute print:left-0 print:top-0 print:w-full transform-gpu scale-[0.85] sm:scale-90 md:scale-95 xl:scale-100 print:scale-0 origin-top"
+              className="w-full print:absolute print:left-0 print:top-0 print:w-full transform-gpu scale-[0.85] sm:scale-90 md:scale-95 xl:scale-100 print:scale-none  origin-top"
+              style={{ padding: `${resumeData.resumeMargin || 0.0}in` }}
             >
               {resumeData.selectedTemplate ? (
                 renderTemplate()
