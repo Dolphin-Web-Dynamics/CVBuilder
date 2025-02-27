@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import SkillsTable, { Skill } from '../SkillsTable';
-import { ResumeData } from '@/types/resume';
-import ReactMarkDown from 'react-markdown';
+import React from "react";
+import SkillsTable, { Skill } from "../SkillsTable";
+import { ResumeData } from "@/types/resume";
+import ReactMarkDown from "react-markdown";
 
 interface ModernTemplateProps {
   data: ResumeData;
@@ -11,22 +11,24 @@ interface ModernTemplateProps {
 
 // Utility function to simplify the URL
 const simplifyUrl = (url: string) => {
-  return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
+  return url.replace(/^https?:\/\//, "").replace(/^www\./, "");
 };
 
 const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
   const skills: Skill[] = (data.skills || []).map((skill) =>
-    typeof skill === 'string' ? { technology: skill, is_relevant: true } : (skill as Skill)
+    typeof skill === "string"
+      ? { technology: skill, is_relevant: true }
+      : (skill as Skill)
   );
   return (
-    <div className="container mx-auto p-4">
-      {/* // The container class here enforces a consistent max-width (if you have container sizes defined)
-      // You can adjust the container’s max-width in your Tailwind config or add a specific max-w-* class. */}
+    <div className=" mx-auto">
       {/* Header Section */}
-      < header className="w-full flex items-center justify-between print:visible" >
+      <header className="w-full flex items-center justify-between print:visible">
         <div className="w-1/2 flex-shrink-0">
           <h1 className="text-4xl font-bold">{data.candidate_name}</h1>
-          <p className="text-md font-semibold text-gray-600">{data.candidate_title}</p>
+          <p className="text-md font-semibold text-gray-600">
+            {data.candidate_title}
+          </p>
         </div>
         <div className="w-1/2 flex-shrink-0 text-right">
           {data.linkedin && (
@@ -38,7 +40,7 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
           <p className="text-sm text-gray-600">{data.phone}</p>
           <p className="text-sm text-gray-600">{data.location}</p>
         </div>
-      </header >
+      </header>
 
       {/* Skills and Job Listing */}
       {/* <h2 className="text-lg uppercase font-semibold ">Skills</h2> */}
@@ -49,7 +51,7 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
       </div>
 
       {/* Work Experience */}
-      < section className="mb-6 print:visible" >
+      <section className="mb-6 print:visible">
         {/* <h2 className="text-lg uppercase font-semibold">Work Experience</h2> */}
         <hr className="mb-2" />
         {data.work_experience.map((job, index) => (
@@ -65,7 +67,7 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
                     components={{
                       // Render paragraphs as a span to avoid extra margins
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                      p: ({ node, ...props }) => <span {...props} />
+                      p: ({ node, ...props }) => <span {...props} />,
                     }}
                   >
                     {point}
@@ -74,40 +76,37 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
               ))}
             </ul>
             <p className="text-sm text-gray-600 mt-1 ml-5">
-              <strong>Stack:</strong>{' '}
+              <strong>Stack:</strong>{" "}
               {job?.stack?.map((tech, idx) => (
-                <span key={idx} className={tech.is_relevant ? 'font-bold' : ''}>
+                <span key={idx} className={tech.is_relevant ? "font-bold" : ""}>
                   {tech.technology}
-                  {idx < job.stack.length - 1 && ', '}
+                  {idx < job.stack.length - 1 && ", "}
                 </span>
               ))}
             </p>
           </div>
-        ))
-        }
-      </section >
+        ))}
+      </section>
 
       <hr className="mb-2" />
 
       {/* Education and Certifications */}
-      < section className=" print:visible" >
+      <section className=" print:visible">
         {/* <h2 className="text-xl font-semibold mb-2">Education and Certifications</h2> */}
-        {
-          data.education_certifications.education.map((edu, index) => (
-            <div key={index} className="mb-2">
-              <p>
-                <strong>{edu.degree}</strong> - {edu.school_name}
-              </p>
-              {edu.notable_achievements && (
-                <ul className=" list-inside ml-5">
-                  {edu.notable_achievements.map((achievement, idx) => (
-                    <li key={idx}>{achievement}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))
-        }
+        {data.education_certifications.education.map((edu, index) => (
+          <div key={index} className="mb-2">
+            <p>
+              <strong>{edu.degree}</strong> - {edu.school_name}
+            </p>
+            {edu.notable_achievements && (
+              <ul className=" list-inside ml-5">
+                {edu.notable_achievements.map((achievement, idx) => (
+                  <li key={idx}>{achievement}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
         <div>
           {/* <strong>Certifications:</strong> */}
           <ul className=" list-inside mt-1 ml-5">
@@ -118,7 +117,7 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
             ))}
           </ul>
         </div>
-      </section >
+      </section>
     </div>
   );
 };

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ResumeData } from '../../types/resume';
-import SkillsTable, { Skill } from '../SkillsTable';
-import ReactMarkDown from 'react-markdown';
+import React from "react";
+import { ResumeData } from "../../types/resume";
+import SkillsTable, { Skill } from "../SkillsTable";
+import ReactMarkDown from "react-markdown";
 
 interface ClassicTemplateProps {
   data: ResumeData;
@@ -11,21 +11,23 @@ interface ClassicTemplateProps {
 
 // Utility function to simplify the URL
 const simplifyUrl = (url: string) => {
-  return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
+  return url.replace(/^https?:\/\//, "").replace(/^www\./, "");
 };
 
 const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
   const skills: Skill[] = (data.skills || []).map((skill) =>
-    typeof skill === 'string' ? { technology: skill, is_relevant: true } : (skill as Skill)
+    typeof skill === "string"
+      ? { technology: skill, is_relevant: true }
+      : (skill as Skill)
   );
 
   return (
-    <div className="container mx-auto p-4">
+    <div className=" mx-auto">
       {/* Header Section */}
       <header className="text-center print:visible">
         <h1 className="text-3xl font-bold">{data.candidate_name}</h1>
         <p className="text-md text-gray-600">
-          {data.email} &middot; {data.phone} &middot; {data.location} &middot;{' '}
+          {data.email} &middot; {data.phone} &middot; {data.location} &middot;{" "}
           {data.linkedin && (
             <a href={data.linkedin} className="text-blue-500 underline">
               {simplifyUrl(data.linkedin)}
@@ -58,7 +60,7 @@ const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
                     components={{
                       // Render paragraphs as a span to avoid extra margins
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                      p: ({ node, ...props }) => <span {...props} />
+                      p: ({ node, ...props }) => <span {...props} />,
                     }}
                   >
                     {point}
@@ -67,11 +69,11 @@ const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
               ))}
             </ul>
             <p className="text-sm text-gray-600 mt-2">
-              <strong className='ml-5'>Stack:</strong>{' '}
+              <strong className="ml-5">Stack:</strong>{" "}
               {job?.stack?.map((tech, idx) => (
-                <span key={idx} className={tech.is_relevant ? 'font-bold' : ''}>
+                <span key={idx} className={tech.is_relevant ? "font-bold" : ""}>
                   {tech.technology}
-                  {idx < job.stack.length - 1 && ', '}
+                  {idx < job.stack.length - 1 && ", "}
                 </span>
               ))}
             </p>
@@ -81,7 +83,9 @@ const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
 
       {/* Education */}
       <section className="print:visible">
-        <h2 className="text-l uppercase font-semibold">Education and Certifications</h2>
+        <h2 className="text-l uppercase font-semibold">
+          Education and Certifications
+        </h2>
         <hr className="mb-2" />
         {data.education_certifications.education.map((edu, index) => (
           <div key={index} className="mb-2">
@@ -97,7 +101,7 @@ const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
         {data.education_certifications.certifications &&
           data.education_certifications.certifications.map((cert, index) => (
             <div key={index} className="">
-              <p className='ml-5'>
+              <p className="ml-5">
                 {cert.certification_name} - {cert.issuing_organization}
               </p>
             </div>
