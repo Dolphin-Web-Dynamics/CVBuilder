@@ -4,8 +4,8 @@
 
 import './globals.css';
 import { ResumeProvider } from '@/context/ResumeContext';
-import Link from 'next/link';
-
+// import Link from 'next/link';
+import { Navbar } from '@/components/navbar';
 export default function RootLayout({
   children,
 }: {
@@ -14,18 +14,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gray-100">
+      <div className="min-h-screen flex flex-col">      
+        <Navbar 
+        className="px-4"
+        routes={
+          [
+            {name: 'Home', path: '/'},
+            {name: 'Resume', path: '/resume'},
+            // {name: 'Preview', path: '/preview'}
+          ]
+        }
+        buttonLink='/resume'
+        /> 
         <ResumeProvider>
-          <nav className="bg-gray-800 text-white p-4">
-            <div className="container mx-auto flex space-x-4">
-              <Link href="/" className="hover:text-gray-400">Home</Link>
-              {/* <Link href="/templates" className="hover:text-gray-400">Select Template</Link> */}
-              {/* <Link href="/profile" className="hover:text-gray-400">Personal Profile</Link> */}
-              {/* <Link href="/job" className="hover:text-gray-400">Job Listing</Link> */}
-              <Link href="/resume" className="hover:text-gray-400">View Resume</Link>
-            </div>
-          </nav>
-          <main className="container mx-auto p-4">{children}</main>
+        <main className="flex-1 container py-8">{children}</main>
         </ResumeProvider>
+        </div>
       </body>
     </html>
   );

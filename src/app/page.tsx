@@ -18,3 +18,11 @@ export default function Home() {
     </div>
   );
 }
+
+// main className="flex-1 container py-8">
+//         <h1 className="text-3xl font-bold mb-6">Welcome to ResumeBuilder</h1>
+//         <p className="text-muted-foreground mb-8">
+//           Create professional resumes in minutes with our easy-to-use builder.
+//         </p>
+//         {/* Rest of your homepage content */}
+//       </main>
