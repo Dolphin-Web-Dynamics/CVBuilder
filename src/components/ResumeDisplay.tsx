@@ -79,7 +79,7 @@ const ResumeDisplay: React.FC = () => {
               Print Resume
             </button>
           </div>
-          <div className="bg-white  rounded-md print:visible print:[&_*]:visible max-w-[8.5in] w-full">
+          <div className="bg-white p-[.5in] rounded-md print:visible print:[&_*]:visible max-w-[8in] w-full">
             <div
               className="w-full print:absolute print:left-0 print:top-0 print:w-full"
               style={{ padding: `${resumeData.resumeMargin || 0.1}in` }}
