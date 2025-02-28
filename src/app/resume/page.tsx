@@ -14,7 +14,7 @@ import MobileSidebar from "@/components/MobileSidebar";
 import UnsupportedBrowserWarning from "@/components/UnsupportedBrowserWarning";
 import PrintButton from "@/components/PrintButton";
 
-const ResumePage: React.FC = () => {
+function ResumePage() {
   const { resumeData } = useContext(ResumeContext);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
@@ -81,6 +81,6 @@ const ResumePage: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
 export default ResumePage;
