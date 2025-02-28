@@ -74,7 +74,7 @@ const ResumeDisplay: React.FC = () => {
           </div>
 
           {/* Resume Preview Container */}
-          <div className="bg-white mx-auto my-4  p-[.5in] rounded-md print:visible print:[&_*]:visible print:w-full w-[8in] overflow-auto shadow-md print:shadow-none">
+          <div className="bg-white mx-auto my-4  p-[.5in] rounded-md print:visible print:[&_*]:visible print:w-full max-w-[8in] overflow-auto shadow-md print:shadow-none">
             <div
               // className="w-full print:absolute print:left-0 print:top-0 print:w-full transform-gpu scale-[0.85] sm:scale-90 md:scale-95 xl:scale-100 print:scale-0 origin-top"
               className="w-full print:absolute print:left-0 print:top-0 print:w-full transform-gpu scale-[0.85] sm:scale-90 md:scale-95 xl:scale-100 print:scale-none  origin-top"
