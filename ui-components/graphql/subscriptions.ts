@@ -17,7 +17,6 @@ export const onCreateAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -49,7 +48,6 @@ export const onCreateCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -90,7 +88,6 @@ export const onCreateDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -133,7 +130,6 @@ export const onCreateExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -222,7 +218,6 @@ export const onCreateProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -231,6 +226,10 @@ export const onCreateProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -279,7 +278,6 @@ export const onCreateResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -322,7 +320,6 @@ export const onCreateSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -336,13 +333,29 @@ export const onCreateSkill = /* GraphQL */ `
     }
   }
 `;
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onCreateTodo(filter: $filter) {
-      content
+export const onCreateSocial = /* GraphQL */ `
+  subscription OnCreateSocial(
+    $filter: ModelSubscriptionSocialFilterInput
+    $owner: String
+  ) {
+    onCreateSocial(filter: $filter, owner: $owner) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }
@@ -362,7 +375,6 @@ export const onDeleteAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -394,7 +406,6 @@ export const onDeleteCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -435,7 +446,6 @@ export const onDeleteDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -478,7 +488,6 @@ export const onDeleteExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -567,7 +576,6 @@ export const onDeleteProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -576,6 +584,10 @@ export const onDeleteProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -624,7 +636,6 @@ export const onDeleteResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -667,7 +678,6 @@ export const onDeleteSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -681,13 +691,29 @@ export const onDeleteSkill = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onDeleteTodo(filter: $filter) {
-      content
+export const onDeleteSocial = /* GraphQL */ `
+  subscription OnDeleteSocial(
+    $filter: ModelSubscriptionSocialFilterInput
+    $owner: String
+  ) {
+    onDeleteSocial(filter: $filter, owner: $owner) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }
@@ -707,7 +733,6 @@ export const onUpdateAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -739,7 +764,6 @@ export const onUpdateCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -780,7 +804,6 @@ export const onUpdateDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -823,7 +846,6 @@ export const onUpdateExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -912,7 +934,6 @@ export const onUpdateProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -921,6 +942,10 @@ export const onUpdateProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -969,7 +994,6 @@ export const onUpdateResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -1012,7 +1036,6 @@ export const onUpdateSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -1026,13 +1049,29 @@ export const onUpdateSkill = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onUpdateTodo(filter: $filter) {
-      content
+export const onUpdateSocial = /* GraphQL */ `
+  subscription OnUpdateSocial(
+    $filter: ModelSubscriptionSocialFilterInput
+    $owner: String
+  ) {
+    onUpdateSocial(filter: $filter, owner: $owner) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }

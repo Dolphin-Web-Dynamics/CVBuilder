@@ -38,25 +38,12 @@ console.log(profile)
 
 const schema = a.schema({
 
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+  // Todo: a
+  //   .model({
+  //     content: a.string(),
+  //   })
+  //   .authorization((allow) => [allow.publicApiKey()]),
 
-
-  // Skill model: A candidate's technical skill.
-  Skill: a
-    .model({
-      technology: a.string().required(),
-      proficiency: a.string().required(),
-      // Associate the skill with a Profile.
-      profileId: a.string(),
-      profile: a.belongsTo("Profile", "profileId"),
-      experienceId: a.string(),
-      experience: a.belongsTo("Experience", "experienceId"),
-    })
-    .authorization((allow) => [allow.owner()]),
 
   // Address model: The candidate's address.
   Address: a
@@ -70,24 +57,6 @@ const schema = a.schema({
       // Associate the address with a Profile.
       profileId: a.string(),
       profile: a.belongsTo("Profile", "profileId"),
-
-    })
-    .authorization((allow) => [allow.owner()]),
-
-  // Degree model: Educational background.
-  Degree: a
-    .model({
-      degree: a.string(),
-      school_name: a.string(),
-      start_date: a.date(),
-      end_date: a.date(),
-      notable_achievements: a.string().array(),
-      // Associate the degree with a Profile.
-      profileId: a.string(),
-      profile: a.belongsTo("Profile", "profileId"),
-      // Optionally, if you want to attach degrees directly to a Resume:
-      resumeId: a.string(),
-      resume: a.belongsTo("Resume", "resumeId"),  // Changed from a.hasMany to a.belongsTo
 
     })
     .authorization((allow) => [allow.owner()]),
@@ -107,6 +76,26 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.owner()]),
 
+
+  // Degree model: Educational background.
+  Degree: a
+  .model({
+    degree: a.string(),
+    school_name: a.string(),
+    start_date: a.date(),
+    end_date: a.date(),
+    notable_achievements: a.string().array(),
+    // Associate the degree with a Profile.
+    profileId: a.string(),
+    profile: a.belongsTo("Profile", "profileId"),
+    // Optionally, if you want to attach degrees directly to a Resume:
+    resumeId: a.string(),
+    resume: a.belongsTo("Resume", "resumeId"),  // Changed from a.hasMany to a.belongsTo
+
+  })
+  .authorization((allow) => [allow.owner()]),
+
+
   // Experience model: Work experience that can belong to either a Profile or a Resume.
   Experience: a
     .model({
@@ -125,31 +114,6 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.owner()]),
 
-  // // firstProfileResponce model: (If still needed; adjust fields as required.)
-  // FirstProfileResponce: a
-  //   .model({
-  //     id: a.string(),
-  //   })
-  //   .authorization((allow) => [allow.owner()]),
-
-  // Profile model: The candidate’s main profile.
-  Profile: a
-    .model({
-      name: a.string(),
-      email: a.email(),
-      phone: a.phone(),
-      linkedin: a.url(),
-      // One-to-one relationship for address.
-      address: a.hasOne("Address", "profileId"),
-      // One-to-many relationships for skills, degrees, certifications, and experiences.
-      skills: a.hasMany("Skill", "profileId"),
-      degrees: a.hasMany("Degree", "profileId"),
-      certifications: a.hasMany("Certification", "profileId"),
-      experiences: a.hasMany("Experience", "profileId"),
-      resumes: a.hasMany("Resume", "profileId"),
-    })
-    .authorization((allow) => [allow.owner()]),
-
   // Opening model: A job opening.
   Opening: a
     .model({
@@ -163,6 +127,26 @@ const schema = a.schema({
       key_requirements: a.string().array(),
     })
     .authorization((allow) => [allow.owner()]),
+
+
+
+  // Profile model: The candidate’s main profile.
+  Profile: a
+  .model({
+    name: a.string(),
+    email: a.email(),
+    phone: a.phone(),
+    socials: a.hasMany("Social", "profileId"),
+    // One-to-one relationship for address.
+    address: a.hasOne("Address", "profileId"),
+    // One-to-many relationships for skills, degrees, certifications, and experiences.
+    skills: a.hasMany("Skill", "profileId"),
+    degrees: a.hasMany("Degree", "profileId"),
+    certifications: a.hasMany("Certification", "profileId"),
+    experiences: a.hasMany("Experience", "profileId"),
+    resumes: a.hasMany("Resume", "profileId"),
+  })
+  .authorization((allow) => [allow.owner()]),
 
   // Resume model: A tailored resume for a specific opening.
   Resume: a
@@ -179,7 +163,33 @@ const schema = a.schema({
       certifications: a.hasMany("Certification", "resumeId"),
     })
     .authorization((allow) => [allow.owner()]),
+
+  // Skill model: A candidate's technical skill.
+  Skill: a
+    .model({
+      technology: a.string().required(),
+      proficiency: a.string().required(),
+      // Associate the skill with a Profile.
+      profileId: a.string(),
+      profile: a.belongsTo("Profile", "profileId"),
+      experienceId: a.string(),
+      experience: a.belongsTo("Experience", "experienceId"),
+    })
+    .authorization((allow) => [allow.owner()]),
+
+      // Social model: Represents a social link for a profile.
+  Social: a
+  .model({
+    type: a.string().required(), 
+    url: a.url().required(),
+    profileId: a.string(), // Foreign key for association
+    profile: a.belongsTo("Profile", "profileId"),
+  })
+  .authorization((allow) => [allow.owner()]),
+
 });
+
+
 
 export type Schema = ClientSchema<typeof schema>;
 
@@ -198,7 +208,7 @@ export const data = defineData({
 
 /*== STEP 2 ===============================================================
 Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
+Data client to make CRUD-l  requests to your table. (THIS SNIPPET WILL ONLY
 WORK IN THE FRONTEND CODE FILE.)
 
 Using JavaScript or Next.js React Server Components, Middleware, Server
@@ -211,7 +221,7 @@ cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
+const client = generateClient<Schema>() // use this Data client for CRUD-L requests
 */
 
 /*== STEP 3 ===============================================================

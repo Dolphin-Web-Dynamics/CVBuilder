@@ -17,7 +17,6 @@ export const createAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -49,7 +48,6 @@ export const createCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -90,7 +88,6 @@ export const createDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -133,7 +130,6 @@ export const createExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -222,7 +218,6 @@ export const createProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -231,6 +226,10 @@ export const createProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -279,7 +278,6 @@ export const createResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -322,7 +320,6 @@ export const createSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -336,16 +333,29 @@ export const createSkill = /* GraphQL */ `
     }
   }
 `;
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $condition: ModelTodoConditionInput
-    $input: CreateTodoInput!
+export const createSocial = /* GraphQL */ `
+  mutation CreateSocial(
+    $condition: ModelSocialConditionInput
+    $input: CreateSocialInput!
   ) {
-    createTodo(condition: $condition, input: $input) {
-      content
+    createSocial(condition: $condition, input: $input) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }
@@ -365,7 +375,6 @@ export const deleteAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -397,7 +406,6 @@ export const deleteCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -438,7 +446,6 @@ export const deleteDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -481,7 +488,6 @@ export const deleteExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -570,7 +576,6 @@ export const deleteProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -579,6 +584,10 @@ export const deleteProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -627,7 +636,6 @@ export const deleteResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -670,7 +678,6 @@ export const deleteSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -684,16 +691,29 @@ export const deleteSkill = /* GraphQL */ `
     }
   }
 `;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $condition: ModelTodoConditionInput
-    $input: DeleteTodoInput!
+export const deleteSocial = /* GraphQL */ `
+  mutation DeleteSocial(
+    $condition: ModelSocialConditionInput
+    $input: DeleteSocialInput!
   ) {
-    deleteTodo(condition: $condition, input: $input) {
-      content
+    deleteSocial(condition: $condition, input: $input) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }
@@ -713,7 +733,6 @@ export const updateAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -745,7 +764,6 @@ export const updateCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -786,7 +804,6 @@ export const updateDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -829,7 +846,6 @@ export const updateExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -918,7 +934,6 @@ export const updateProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -927,6 +942,10 @@ export const updateProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -975,7 +994,6 @@ export const updateResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -1018,7 +1036,6 @@ export const updateSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -1032,16 +1049,29 @@ export const updateSkill = /* GraphQL */ `
     }
   }
 `;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $condition: ModelTodoConditionInput
-    $input: UpdateTodoInput!
+export const updateSocial = /* GraphQL */ `
+  mutation UpdateSocial(
+    $condition: ModelSocialConditionInput
+    $input: UpdateSocialInput!
   ) {
-    updateTodo(condition: $condition, input: $input) {
-      content
+    updateSocial(condition: $condition, input: $input) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }

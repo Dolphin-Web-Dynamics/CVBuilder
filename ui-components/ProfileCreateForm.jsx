@@ -21,25 +21,21 @@ export default function ProfileCreateForm(props) {
     name: "",
     email: "",
     phone: "",
-    linkedin: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [email, setEmail] = React.useState(initialValues.email);
   const [phone, setPhone] = React.useState(initialValues.phone);
-  const [linkedin, setLinkedin] = React.useState(initialValues.linkedin);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setEmail(initialValues.email);
     setPhone(initialValues.phone);
-    setLinkedin(initialValues.linkedin);
     setErrors({});
   };
   const validations = {
     name: [],
     email: [{ type: "Email" }],
     phone: [{ type: "Phone" }],
-    linkedin: [{ type: "URL" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -70,7 +66,6 @@ export default function ProfileCreateForm(props) {
           name,
           email,
           phone,
-          linkedin,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -136,7 +131,6 @@ export default function ProfileCreateForm(props) {
               name: value,
               email,
               phone,
-              linkedin,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -163,7 +157,6 @@ export default function ProfileCreateForm(props) {
               name,
               email: value,
               phone,
-              linkedin,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -191,7 +184,6 @@ export default function ProfileCreateForm(props) {
               name,
               email,
               phone: value,
-              linkedin,
             };
             const result = onChange(modelFields);
             value = result?.phone ?? value;
@@ -205,33 +197,6 @@ export default function ProfileCreateForm(props) {
         errorMessage={errors.phone?.errorMessage}
         hasError={errors.phone?.hasError}
         {...getOverrideProps(overrides, "phone")}
-      ></TextField>
-      <TextField
-        label="Linkedin"
-        isRequired={false}
-        isReadOnly={false}
-        value={linkedin}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              email,
-              phone,
-              linkedin: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.linkedin ?? value;
-          }
-          if (errors.linkedin?.hasError) {
-            runValidationTasks("linkedin", value);
-          }
-          setLinkedin(value);
-        }}
-        onBlur={() => runValidationTasks("linkedin", linkedin)}
-        errorMessage={errors.linkedin?.errorMessage}
-        hasError={errors.linkedin?.hasError}
-        {...getOverrideProps(overrides, "linkedin")}
       ></TextField>
       <Flex
         justifyContent="space-between"

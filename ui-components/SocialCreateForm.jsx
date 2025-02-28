@@ -4,9 +4,9 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { createTodo } from "./graphql/mutations";
+import { createSocial } from "./graphql/mutations";
 const client = generateClient();
-export default function TodoCreateForm(props) {
+export default function SocialCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -18,16 +18,20 @@ export default function TodoCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    content: "",
+    type: "",
+    url: "",
   };
-  const [content, setContent] = React.useState(initialValues.content);
+  const [type, setType] = React.useState(initialValues.type);
+  const [url, setUrl] = React.useState(initialValues.url);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setContent(initialValues.content);
+    setType(initialValues.type);
+    setUrl(initialValues.url);
     setErrors({});
   };
   const validations = {
-    content: [],
+    type: [{ type: "Required" }],
+    url: [{ type: "Required" }, { type: "URL" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -55,7 +59,8 @@ export default function TodoCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          content,
+          type,
+          url,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -86,7 +91,7 @@ export default function TodoCreateForm(props) {
             }
           });
           await client.graphql({
-            query: createTodo.replaceAll("__typename", ""),
+            query: createSocial.replaceAll("__typename", ""),
             variables: {
               input: {
                 ...modelFields,
@@ -106,32 +111,58 @@ export default function TodoCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "TodoCreateForm")}
+      {...getOverrideProps(overrides, "SocialCreateForm")}
       {...rest}
     >
       <TextField
-        label="Content"
-        isRequired={false}
+        label="Type"
+        isRequired={true}
         isReadOnly={false}
-        value={content}
+        value={type}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              content: value,
+              type: value,
+              url,
             };
             const result = onChange(modelFields);
-            value = result?.content ?? value;
+            value = result?.type ?? value;
           }
-          if (errors.content?.hasError) {
-            runValidationTasks("content", value);
+          if (errors.type?.hasError) {
+            runValidationTasks("type", value);
           }
-          setContent(value);
+          setType(value);
         }}
-        onBlur={() => runValidationTasks("content", content)}
-        errorMessage={errors.content?.errorMessage}
-        hasError={errors.content?.hasError}
-        {...getOverrideProps(overrides, "content")}
+        onBlur={() => runValidationTasks("type", type)}
+        errorMessage={errors.type?.errorMessage}
+        hasError={errors.type?.hasError}
+        {...getOverrideProps(overrides, "type")}
+      ></TextField>
+      <TextField
+        label="Url"
+        isRequired={true}
+        isReadOnly={false}
+        value={url}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              type,
+              url: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.url ?? value;
+          }
+          if (errors.url?.hasError) {
+            runValidationTasks("url", value);
+          }
+          setUrl(value);
+        }}
+        onBlur={() => runValidationTasks("url", url)}
+        errorMessage={errors.url?.errorMessage}
+        hasError={errors.url?.hasError}
+        {...getOverrideProps(overrides, "url")}
       ></TextField>
       <Flex
         justifyContent="space-between"

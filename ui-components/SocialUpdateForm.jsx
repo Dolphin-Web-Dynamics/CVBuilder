@@ -4,13 +4,13 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { getTodo } from "./graphql/queries";
-import { updateTodo } from "./graphql/mutations";
+import { getSocial } from "./graphql/queries";
+import { updateSocial } from "./graphql/mutations";
 const client = generateClient();
-export default function TodoUpdateForm(props) {
+export default function SocialUpdateForm(props) {
   const {
     id: idProp,
-    todo: todoModelProp,
+    social: socialModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -20,35 +20,39 @@ export default function TodoUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    content: "",
+    type: "",
+    url: "",
   };
-  const [content, setContent] = React.useState(initialValues.content);
+  const [type, setType] = React.useState(initialValues.type);
+  const [url, setUrl] = React.useState(initialValues.url);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = todoRecord
-      ? { ...initialValues, ...todoRecord }
+    const cleanValues = socialRecord
+      ? { ...initialValues, ...socialRecord }
       : initialValues;
-    setContent(cleanValues.content);
+    setType(cleanValues.type);
+    setUrl(cleanValues.url);
     setErrors({});
   };
-  const [todoRecord, setTodoRecord] = React.useState(todoModelProp);
+  const [socialRecord, setSocialRecord] = React.useState(socialModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? (
             await client.graphql({
-              query: getTodo.replaceAll("__typename", ""),
+              query: getSocial.replaceAll("__typename", ""),
               variables: { id: idProp },
             })
-          )?.data?.getTodo
-        : todoModelProp;
-      setTodoRecord(record);
+          )?.data?.getSocial
+        : socialModelProp;
+      setSocialRecord(record);
     };
     queryData();
-  }, [idProp, todoModelProp]);
-  React.useEffect(resetStateValues, [todoRecord]);
+  }, [idProp, socialModelProp]);
+  React.useEffect(resetStateValues, [socialRecord]);
   const validations = {
-    content: [],
+    type: [{ type: "Required" }],
+    url: [{ type: "Required" }, { type: "URL" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -76,7 +80,8 @@ export default function TodoUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          content: content ?? null,
+          type,
+          url,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -107,10 +112,10 @@ export default function TodoUpdateForm(props) {
             }
           });
           await client.graphql({
-            query: updateTodo.replaceAll("__typename", ""),
+            query: updateSocial.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: todoRecord.id,
+                id: socialRecord.id,
                 ...modelFields,
               },
             },
@@ -125,32 +130,58 @@ export default function TodoUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "TodoUpdateForm")}
+      {...getOverrideProps(overrides, "SocialUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Content"
-        isRequired={false}
+        label="Type"
+        isRequired={true}
         isReadOnly={false}
-        value={content}
+        value={type}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              content: value,
+              type: value,
+              url,
             };
             const result = onChange(modelFields);
-            value = result?.content ?? value;
+            value = result?.type ?? value;
           }
-          if (errors.content?.hasError) {
-            runValidationTasks("content", value);
+          if (errors.type?.hasError) {
+            runValidationTasks("type", value);
           }
-          setContent(value);
+          setType(value);
         }}
-        onBlur={() => runValidationTasks("content", content)}
-        errorMessage={errors.content?.errorMessage}
-        hasError={errors.content?.hasError}
-        {...getOverrideProps(overrides, "content")}
+        onBlur={() => runValidationTasks("type", type)}
+        errorMessage={errors.type?.errorMessage}
+        hasError={errors.type?.hasError}
+        {...getOverrideProps(overrides, "type")}
+      ></TextField>
+      <TextField
+        label="Url"
+        isRequired={true}
+        isReadOnly={false}
+        value={url}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              type,
+              url: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.url ?? value;
+          }
+          if (errors.url?.hasError) {
+            runValidationTasks("url", value);
+          }
+          setUrl(value);
+        }}
+        onBlur={() => runValidationTasks("url", url)}
+        errorMessage={errors.url?.errorMessage}
+        hasError={errors.url?.hasError}
+        {...getOverrideProps(overrides, "url")}
       ></TextField>
       <Flex
         justifyContent="space-between"
@@ -163,7 +194,7 @@ export default function TodoUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || todoModelProp)}
+          isDisabled={!(idProp || socialModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -175,7 +206,7 @@ export default function TodoUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || todoModelProp) ||
+              !(idProp || socialModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

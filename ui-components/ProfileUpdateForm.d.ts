@@ -20,13 +20,11 @@ export declare type ProfileUpdateFormInputValues = {
     name?: string;
     email?: string;
     phone?: string;
-    linkedin?: string;
 };
 export declare type ProfileUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     phone?: ValidationFunction<string>;
-    linkedin?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ProfileUpdateFormOverridesProps = {
@@ -34,7 +32,6 @@ export declare type ProfileUpdateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     phone?: PrimitiveOverrideProps<TextFieldProps>;
-    linkedin?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ProfileUpdateFormProps = React.PropsWithChildren<{
     overrides?: ProfileUpdateFormOverridesProps | undefined | null;

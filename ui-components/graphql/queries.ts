@@ -14,7 +14,6 @@ export const getAddress = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -43,7 +42,6 @@ export const getCertification = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -81,7 +79,6 @@ export const getDegree = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -121,7 +118,6 @@ export const getExperience = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -204,7 +200,6 @@ export const getProfile = /* GraphQL */ `
         __typename
       }
       id
-      linkedin
       name
       owner
       phone
@@ -213,6 +208,10 @@ export const getProfile = /* GraphQL */ `
         __typename
       }
       skills {
+        nextToken
+        __typename
+      }
+      socials {
         nextToken
         __typename
       }
@@ -258,7 +257,6 @@ export const getResume = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -298,7 +296,6 @@ export const getSkill = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -312,13 +309,26 @@ export const getSkill = /* GraphQL */ `
     }
   }
 `;
-export const getTodo = /* GraphQL */ `
-  query GetTodo($id: ID!) {
-    getTodo(id: $id) {
-      content
+export const getSocial = /* GraphQL */ `
+  query GetSocial($id: ID!) {
+    getSocial(id: $id) {
       createdAt
       id
+      owner
+      profile {
+        createdAt
+        email
+        id
+        name
+        owner
+        phone
+        updatedAt
+        __typename
+      }
+      profileId
+      type
       updatedAt
+      url
       __typename
     }
   }
@@ -462,7 +472,6 @@ export const listProfiles = /* GraphQL */ `
         createdAt
         email
         id
-        linkedin
         name
         owner
         phone
@@ -519,18 +528,21 @@ export const listSkills = /* GraphQL */ `
     }
   }
 `;
-export const listTodos = /* GraphQL */ `
-  query ListTodos(
-    $filter: ModelTodoFilterInput
+export const listSocials = /* GraphQL */ `
+  query ListSocials(
+    $filter: ModelSocialFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSocials(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        content
         createdAt
         id
+        owner
+        profileId
+        type
         updatedAt
+        url
         __typename
       }
       nextToken
