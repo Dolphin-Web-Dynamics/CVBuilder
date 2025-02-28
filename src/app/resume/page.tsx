@@ -8,10 +8,11 @@ import {
   ModernTemplate,
   CustomTemplate,
 } from "@/components/templates";
-import { PrinterIcon, Bars3Icon } from "@heroicons/react/24/solid";
+import { Bars3Icon } from "@heroicons/react/24/solid";
 import SidebarPanel from "@/components/SidebarPanel";
 import MobileSidebar from "@/components/MobileSidebar";
 import UnsupportedBrowserWarning from "@/components/UnsupportedBrowserWarning";
+import PrintButton from "@/components/PrintButton";
 
 const ResumePage: React.FC = () => {
   const { resumeData } = useContext(ResumeContext);
@@ -28,10 +29,6 @@ const ResumePage: React.FC = () => {
       default:
         return <p>Template not found.</p>;
     }
-  };
-
-  const handlePrint = () => {
-    window.print();
   };
 
   return (
@@ -63,18 +60,7 @@ const ResumePage: React.FC = () => {
         {/* Resume Preview */}
         <div className="w-full flex justify-center">
           <div className="bg-gray-100 xl:w-[calc(8.5in)] print:m-0 grid">
-            {/* Print button */}
-            <div className="flex justify-end print:hidden">
-              <button
-                onClick={handlePrint}
-                className="fixed bottom-4 left-4 xl:bottom-8 xl:left-auto xl:right-4 flex items-center bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition shadow-md"
-                aria-label="Print Resume"
-              >
-                <PrinterIcon className="h-5 w-5 mr-2 z-50" />
-                <span className="hidden sm:inline">Print Resume</span>
-              </button>
-            </div>
-
+            <PrintButton />
             {/* Resume Preview Container */}
             <div className="bg-white mx-auto my-4 p-[.5in] print:p-0 rounded-md print:visible print:[&_*]:visible print:w-fit max-w-[8in] overflow-auto shadow-md print:shadow-none">
               <div
