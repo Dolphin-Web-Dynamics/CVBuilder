@@ -63,7 +63,7 @@ function DashboardContent() {
         <aside
           className={`${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:static inset-y-0 left-0 z-30 w-64 bg-gray-100 p-4 overflow-y-auto`}
+          } md:translate-x-0 fixed top-16 bottom-0 left-0 z-30 w-64 bg-gray-100 p-4 overflow-y-auto`}
         >
           <nav>
             <ul>
@@ -88,7 +88,7 @@ function DashboardContent() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto md:ml-64">
           {activeSection !== "Profiles" && (
             <div className="w-full max-w-xs mb-4">
               <ProfileSelector />
