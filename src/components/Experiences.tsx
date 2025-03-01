@@ -9,7 +9,7 @@ import ExperienceCreateForm from "ui-components/ExperienceCreateForm";
 import { useData } from "@/context/DataContext";
 
 export default function Experiences() {
-  const { experiences, selectedProfile } = useData();
+  const { experiences, selectedProfile, deleteExperience } = useData();
   const [expandedExperiences, setExpandedExperiences] = React.useState<
     Set<string>
   >(new Set());
@@ -34,7 +34,7 @@ export default function Experiences() {
 
   return (
     <div className="w-full max-w-md">
-      <h2 className="text-xl font-bold mb-4">Experiences</h2>
+      <h2 className="text-xl font-bold mb-4">Experience</h2>
 
       {!selectedProfile && (
         <p className="text-muted-foreground mb-4">
@@ -50,7 +50,7 @@ export default function Experiences() {
         )}
 
         {filteredExperiences.map((item) => (
-          <Card key={item.id} className="w-lg overflow-hidden">
+          <Card key={item.id} className="overflow-hidden">
             <CardHeader className="px-4 py-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-medium">
@@ -78,6 +78,7 @@ export default function Experiences() {
                     variant="ghost"
                     size="sm"
                     aria-label="Delete experience"
+                    onClick={() => deleteExperience(item.id)}
                   >
                     <Minus className="h-4 w-4" />
                   </Button>

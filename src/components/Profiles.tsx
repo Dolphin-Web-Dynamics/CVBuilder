@@ -15,7 +15,7 @@ import { SiLinkedin, SiGithub, SiX, SiStackoverflow } from "react-icons/si";
 import { Copy } from "lucide-react";
 import { useData } from "@/context/DataContext";
 
-const client = generateClient(); // used for mutations like delete
+// const client = generateClient(); // used for mutations like delete
 
 // Map social types to icon components
 const socialIcons: Record<string, IconType> = {

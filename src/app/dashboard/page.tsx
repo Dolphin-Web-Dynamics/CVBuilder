@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {
-  UserIcon,
+  UsersIcon,
   BriefcaseIcon,
   AcademicCapIcon,
   CheckBadgeIcon,
@@ -15,7 +15,7 @@ import Profiles from "@/components/Profiles";
 import { DataProvider } from "@/context/DataContext";
 
 const sections = [
-  { name: "Profile", icon: UserIcon },
+  { name: "Profiles", icon: UsersIcon },
   { name: "Experience", icon: BriefcaseIcon },
   { name: "Education", icon: AcademicCapIcon },
   { name: "Certifications", icon: CheckBadgeIcon },
@@ -28,7 +28,7 @@ function DashboardContent() {
 
   const renderSection = () => {
     switch (activeSection) {
-      case "Profile":
+      case "Profiles":
         return <Profiles />;
       case "Experience":
         return <Experiences />;
