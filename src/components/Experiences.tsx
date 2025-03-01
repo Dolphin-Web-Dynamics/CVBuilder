@@ -8,7 +8,6 @@ import type { Schema } from "amplify/data/resource";
 import ExperienceUpdateForm from "ui-components/ExperienceUpdateForm";
 import ExperienceCreateForm from "ui-components/ExperienceCreateForm";
 import { generateClient } from "aws-amplify/data";
-import ProfileSelector from "./ProfileSelector";
 
 const client = generateClient<Schema>();
 
