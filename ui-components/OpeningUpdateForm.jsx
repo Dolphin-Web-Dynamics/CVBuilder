@@ -9,6 +9,7 @@ import {
   Grid,
   Icon,
   ScrollView,
+  SwitchField,
   Text,
   TextField,
   useTheme,
@@ -188,28 +189,30 @@ export default function OpeningUpdateForm(props) {
   const initialValues = {
     job_title: "",
     company_name: "",
-    job_description: "",
-    job_location: "",
-    salary_range: "",
-    employment_type: "",
+    full_job_description: "",
+    applied: false,
+    submission_date: "",
+    response_date: "",
+    status: "",
+    mode: "",
     key_requirements: [],
   };
   const [job_title, setJob_title] = React.useState(initialValues.job_title);
   const [company_name, setCompany_name] = React.useState(
     initialValues.company_name
   );
-  const [job_description, setJob_description] = React.useState(
-    initialValues.job_description
+  const [full_job_description, setFull_job_description] = React.useState(
+    initialValues.full_job_description
   );
-  const [job_location, setJob_location] = React.useState(
-    initialValues.job_location
+  const [applied, setApplied] = React.useState(initialValues.applied);
+  const [submission_date, setSubmission_date] = React.useState(
+    initialValues.submission_date
   );
-  const [salary_range, setSalary_range] = React.useState(
-    initialValues.salary_range
+  const [response_date, setResponse_date] = React.useState(
+    initialValues.response_date
   );
-  const [employment_type, setEmployment_type] = React.useState(
-    initialValues.employment_type
-  );
+  const [status, setStatus] = React.useState(initialValues.status);
+  const [mode, setMode] = React.useState(initialValues.mode);
   const [key_requirements, setKey_requirements] = React.useState(
     initialValues.key_requirements
   );
@@ -220,10 +223,12 @@ export default function OpeningUpdateForm(props) {
       : initialValues;
     setJob_title(cleanValues.job_title);
     setCompany_name(cleanValues.company_name);
-    setJob_description(cleanValues.job_description);
-    setJob_location(cleanValues.job_location);
-    setSalary_range(cleanValues.salary_range);
-    setEmployment_type(cleanValues.employment_type);
+    setFull_job_description(cleanValues.full_job_description);
+    setApplied(cleanValues.applied);
+    setSubmission_date(cleanValues.submission_date);
+    setResponse_date(cleanValues.response_date);
+    setStatus(cleanValues.status);
+    setMode(cleanValues.mode);
     setKey_requirements(cleanValues.key_requirements ?? []);
     setCurrentKey_requirementsValue("");
     setErrors({});
@@ -250,10 +255,12 @@ export default function OpeningUpdateForm(props) {
   const validations = {
     job_title: [],
     company_name: [],
-    job_description: [],
-    job_location: [],
-    salary_range: [],
-    employment_type: [],
+    full_job_description: [],
+    applied: [],
+    submission_date: [],
+    response_date: [],
+    status: [],
+    mode: [],
     key_requirements: [],
   };
   const runValidationTasks = async (
@@ -284,10 +291,12 @@ export default function OpeningUpdateForm(props) {
         let modelFields = {
           job_title: job_title ?? null,
           company_name: company_name ?? null,
-          job_description: job_description ?? null,
-          job_location: job_location ?? null,
-          salary_range: salary_range ?? null,
-          employment_type: employment_type ?? null,
+          full_job_description: full_job_description ?? null,
+          applied: applied ?? null,
+          submission_date: submission_date ?? null,
+          response_date: response_date ?? null,
+          status: status ?? null,
+          mode: mode ?? null,
           key_requirements: key_requirements ?? null,
         };
         const validationResponses = await Promise.all(
@@ -351,10 +360,12 @@ export default function OpeningUpdateForm(props) {
             const modelFields = {
               job_title: value,
               company_name,
-              job_description,
-              job_location,
-              salary_range,
-              employment_type,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date,
+              status,
+              mode,
               key_requirements,
             };
             const result = onChange(modelFields);
@@ -381,10 +392,12 @@ export default function OpeningUpdateForm(props) {
             const modelFields = {
               job_title,
               company_name: value,
-              job_description,
-              job_location,
-              salary_range,
-              employment_type,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date,
+              status,
+              mode,
               key_requirements,
             };
             const result = onChange(modelFields);
@@ -401,124 +414,200 @@ export default function OpeningUpdateForm(props) {
         {...getOverrideProps(overrides, "company_name")}
       ></TextField>
       <TextField
-        label="Job description"
+        label="Full job description"
         isRequired={false}
         isReadOnly={false}
-        value={job_description}
+        value={full_job_description}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_title,
               company_name,
-              job_description: value,
-              job_location,
-              salary_range,
-              employment_type,
+              full_job_description: value,
+              applied,
+              submission_date,
+              response_date,
+              status,
+              mode,
               key_requirements,
             };
             const result = onChange(modelFields);
-            value = result?.job_description ?? value;
+            value = result?.full_job_description ?? value;
           }
-          if (errors.job_description?.hasError) {
-            runValidationTasks("job_description", value);
+          if (errors.full_job_description?.hasError) {
+            runValidationTasks("full_job_description", value);
           }
-          setJob_description(value);
+          setFull_job_description(value);
         }}
-        onBlur={() => runValidationTasks("job_description", job_description)}
-        errorMessage={errors.job_description?.errorMessage}
-        hasError={errors.job_description?.hasError}
-        {...getOverrideProps(overrides, "job_description")}
+        onBlur={() =>
+          runValidationTasks("full_job_description", full_job_description)
+        }
+        errorMessage={errors.full_job_description?.errorMessage}
+        hasError={errors.full_job_description?.hasError}
+        {...getOverrideProps(overrides, "full_job_description")}
+      ></TextField>
+      <SwitchField
+        label="Applied"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={applied}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              job_title,
+              company_name,
+              full_job_description,
+              applied: value,
+              submission_date,
+              response_date,
+              status,
+              mode,
+              key_requirements,
+            };
+            const result = onChange(modelFields);
+            value = result?.applied ?? value;
+          }
+          if (errors.applied?.hasError) {
+            runValidationTasks("applied", value);
+          }
+          setApplied(value);
+        }}
+        onBlur={() => runValidationTasks("applied", applied)}
+        errorMessage={errors.applied?.errorMessage}
+        hasError={errors.applied?.hasError}
+        {...getOverrideProps(overrides, "applied")}
+      ></SwitchField>
+      <TextField
+        label="Submission date"
+        isRequired={false}
+        isReadOnly={false}
+        type="date"
+        value={submission_date}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              job_title,
+              company_name,
+              full_job_description,
+              applied,
+              submission_date: value,
+              response_date,
+              status,
+              mode,
+              key_requirements,
+            };
+            const result = onChange(modelFields);
+            value = result?.submission_date ?? value;
+          }
+          if (errors.submission_date?.hasError) {
+            runValidationTasks("submission_date", value);
+          }
+          setSubmission_date(value);
+        }}
+        onBlur={() => runValidationTasks("submission_date", submission_date)}
+        errorMessage={errors.submission_date?.errorMessage}
+        hasError={errors.submission_date?.hasError}
+        {...getOverrideProps(overrides, "submission_date")}
       ></TextField>
       <TextField
-        label="Job location"
+        label="Response date"
         isRequired={false}
         isReadOnly={false}
-        value={job_location}
+        type="date"
+        value={response_date}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_title,
               company_name,
-              job_description,
-              job_location: value,
-              salary_range,
-              employment_type,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date: value,
+              status,
+              mode,
               key_requirements,
             };
             const result = onChange(modelFields);
-            value = result?.job_location ?? value;
+            value = result?.response_date ?? value;
           }
-          if (errors.job_location?.hasError) {
-            runValidationTasks("job_location", value);
+          if (errors.response_date?.hasError) {
+            runValidationTasks("response_date", value);
           }
-          setJob_location(value);
+          setResponse_date(value);
         }}
-        onBlur={() => runValidationTasks("job_location", job_location)}
-        errorMessage={errors.job_location?.errorMessage}
-        hasError={errors.job_location?.hasError}
-        {...getOverrideProps(overrides, "job_location")}
+        onBlur={() => runValidationTasks("response_date", response_date)}
+        errorMessage={errors.response_date?.errorMessage}
+        hasError={errors.response_date?.hasError}
+        {...getOverrideProps(overrides, "response_date")}
       ></TextField>
       <TextField
-        label="Salary range"
+        label="Status"
         isRequired={false}
         isReadOnly={false}
-        value={salary_range}
+        value={status}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_title,
               company_name,
-              job_description,
-              job_location,
-              salary_range: value,
-              employment_type,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date,
+              status: value,
+              mode,
               key_requirements,
             };
             const result = onChange(modelFields);
-            value = result?.salary_range ?? value;
+            value = result?.status ?? value;
           }
-          if (errors.salary_range?.hasError) {
-            runValidationTasks("salary_range", value);
+          if (errors.status?.hasError) {
+            runValidationTasks("status", value);
           }
-          setSalary_range(value);
+          setStatus(value);
         }}
-        onBlur={() => runValidationTasks("salary_range", salary_range)}
-        errorMessage={errors.salary_range?.errorMessage}
-        hasError={errors.salary_range?.hasError}
-        {...getOverrideProps(overrides, "salary_range")}
+        onBlur={() => runValidationTasks("status", status)}
+        errorMessage={errors.status?.errorMessage}
+        hasError={errors.status?.hasError}
+        {...getOverrideProps(overrides, "status")}
       ></TextField>
       <TextField
-        label="Employment type"
+        label="Mode"
         isRequired={false}
         isReadOnly={false}
-        value={employment_type}
+        value={mode}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_title,
               company_name,
-              job_description,
-              job_location,
-              salary_range,
-              employment_type: value,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date,
+              status,
+              mode: value,
               key_requirements,
             };
             const result = onChange(modelFields);
-            value = result?.employment_type ?? value;
+            value = result?.mode ?? value;
           }
-          if (errors.employment_type?.hasError) {
-            runValidationTasks("employment_type", value);
+          if (errors.mode?.hasError) {
+            runValidationTasks("mode", value);
           }
-          setEmployment_type(value);
+          setMode(value);
         }}
-        onBlur={() => runValidationTasks("employment_type", employment_type)}
-        errorMessage={errors.employment_type?.errorMessage}
-        hasError={errors.employment_type?.hasError}
-        {...getOverrideProps(overrides, "employment_type")}
+        onBlur={() => runValidationTasks("mode", mode)}
+        errorMessage={errors.mode?.errorMessage}
+        hasError={errors.mode?.hasError}
+        {...getOverrideProps(overrides, "mode")}
       ></TextField>
       <ArrayField
         onChange={async (items) => {
@@ -527,10 +616,12 @@ export default function OpeningUpdateForm(props) {
             const modelFields = {
               job_title,
               company_name,
-              job_description,
-              job_location,
-              salary_range,
-              employment_type,
+              full_job_description,
+              applied,
+              submission_date,
+              response_date,
+              status,
+              mode,
               key_requirements: values,
             };
             const result = onChange(modelFields);

@@ -12,6 +12,23 @@ export const onCreateAddress = /* GraphQL */ `
       country
       createdAt
       id
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
       profile {
         createdAt
@@ -164,20 +181,30 @@ export const onCreateOpening = /* GraphQL */ `
     $owner: String
   ) {
     onCreateOpening(filter: $filter, owner: $owner) {
+      addresses {
+        nextToken
+        __typename
+      }
+      applied
       company_name
       createdAt
-      employment_type
+      full_job_description
       id
-      job_description
-      job_location
       job_title
       key_requirements
+      mode
       owner
+      response_date
       resumes {
         nextToken
         __typename
       }
-      salary_range
+      skills {
+        nextToken
+        __typename
+      }
+      status
+      submission_date
       updatedAt
       __typename
     }
@@ -194,6 +221,7 @@ export const onCreateProfile = /* GraphQL */ `
         country
         createdAt
         id
+        openingId
         owner
         profileId
         state
@@ -259,16 +287,18 @@ export const onCreateResume = /* GraphQL */ `
       }
       id
       opening {
+        applied
         company_name
         createdAt
-        employment_type
+        full_job_description
         id
-        job_description
-        job_location
         job_title
         key_requirements
+        mode
         owner
-        salary_range
+        response_date
+        status
+        submission_date
         updatedAt
         __typename
       }
@@ -314,8 +344,25 @@ export const onCreateSkill = /* GraphQL */ `
       }
       experienceId
       id
+      isRelevant
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
-      proficiency
       profile {
         createdAt
         email
@@ -329,6 +376,7 @@ export const onCreateSkill = /* GraphQL */ `
       profileId
       technology
       updatedAt
+      years_of_experience
       __typename
     }
   }
@@ -370,6 +418,23 @@ export const onDeleteAddress = /* GraphQL */ `
       country
       createdAt
       id
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
       profile {
         createdAt
@@ -522,20 +587,30 @@ export const onDeleteOpening = /* GraphQL */ `
     $owner: String
   ) {
     onDeleteOpening(filter: $filter, owner: $owner) {
+      addresses {
+        nextToken
+        __typename
+      }
+      applied
       company_name
       createdAt
-      employment_type
+      full_job_description
       id
-      job_description
-      job_location
       job_title
       key_requirements
+      mode
       owner
+      response_date
       resumes {
         nextToken
         __typename
       }
-      salary_range
+      skills {
+        nextToken
+        __typename
+      }
+      status
+      submission_date
       updatedAt
       __typename
     }
@@ -552,6 +627,7 @@ export const onDeleteProfile = /* GraphQL */ `
         country
         createdAt
         id
+        openingId
         owner
         profileId
         state
@@ -617,16 +693,18 @@ export const onDeleteResume = /* GraphQL */ `
       }
       id
       opening {
+        applied
         company_name
         createdAt
-        employment_type
+        full_job_description
         id
-        job_description
-        job_location
         job_title
         key_requirements
+        mode
         owner
-        salary_range
+        response_date
+        status
+        submission_date
         updatedAt
         __typename
       }
@@ -672,8 +750,25 @@ export const onDeleteSkill = /* GraphQL */ `
       }
       experienceId
       id
+      isRelevant
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
-      proficiency
       profile {
         createdAt
         email
@@ -687,6 +782,7 @@ export const onDeleteSkill = /* GraphQL */ `
       profileId
       technology
       updatedAt
+      years_of_experience
       __typename
     }
   }
@@ -728,6 +824,23 @@ export const onUpdateAddress = /* GraphQL */ `
       country
       createdAt
       id
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
       profile {
         createdAt
@@ -880,20 +993,30 @@ export const onUpdateOpening = /* GraphQL */ `
     $owner: String
   ) {
     onUpdateOpening(filter: $filter, owner: $owner) {
+      addresses {
+        nextToken
+        __typename
+      }
+      applied
       company_name
       createdAt
-      employment_type
+      full_job_description
       id
-      job_description
-      job_location
       job_title
       key_requirements
+      mode
       owner
+      response_date
       resumes {
         nextToken
         __typename
       }
-      salary_range
+      skills {
+        nextToken
+        __typename
+      }
+      status
+      submission_date
       updatedAt
       __typename
     }
@@ -910,6 +1033,7 @@ export const onUpdateProfile = /* GraphQL */ `
         country
         createdAt
         id
+        openingId
         owner
         profileId
         state
@@ -975,16 +1099,18 @@ export const onUpdateResume = /* GraphQL */ `
       }
       id
       opening {
+        applied
         company_name
         createdAt
-        employment_type
+        full_job_description
         id
-        job_description
-        job_location
         job_title
         key_requirements
+        mode
         owner
-        salary_range
+        response_date
+        status
+        submission_date
         updatedAt
         __typename
       }
@@ -1030,8 +1156,25 @@ export const onUpdateSkill = /* GraphQL */ `
       }
       experienceId
       id
+      isRelevant
+      opening {
+        applied
+        company_name
+        createdAt
+        full_job_description
+        id
+        job_title
+        key_requirements
+        mode
+        owner
+        response_date
+        status
+        submission_date
+        updatedAt
+        __typename
+      }
+      openingId
       owner
-      proficiency
       profile {
         createdAt
         email
@@ -1045,6 +1188,7 @@ export const onUpdateSkill = /* GraphQL */ `
       profileId
       technology
       updatedAt
+      years_of_experience
       __typename
     }
   }

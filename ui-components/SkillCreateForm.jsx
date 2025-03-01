@@ -1,7 +1,13 @@
 /* eslint-disable */
 "use client";
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SwitchField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { createSkill } from "./graphql/mutations";
@@ -19,21 +25,25 @@ export default function SkillCreateForm(props) {
   } = props;
   const initialValues = {
     technology: "",
-    proficiency: "",
+    isRelevant: false,
+    years_of_experience: "",
   };
   const [technology, setTechnology] = React.useState(initialValues.technology);
-  const [proficiency, setProficiency] = React.useState(
-    initialValues.proficiency
+  const [isRelevant, setIsRelevant] = React.useState(initialValues.isRelevant);
+  const [years_of_experience, setYears_of_experience] = React.useState(
+    initialValues.years_of_experience
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setTechnology(initialValues.technology);
-    setProficiency(initialValues.proficiency);
+    setIsRelevant(initialValues.isRelevant);
+    setYears_of_experience(initialValues.years_of_experience);
     setErrors({});
   };
   const validations = {
     technology: [{ type: "Required" }],
-    proficiency: [{ type: "Required" }],
+    isRelevant: [],
+    years_of_experience: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -62,7 +72,8 @@ export default function SkillCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           technology,
-          proficiency,
+          isRelevant,
+          years_of_experience,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -126,7 +137,8 @@ export default function SkillCreateForm(props) {
           if (onChange) {
             const modelFields = {
               technology: value,
-              proficiency,
+              isRelevant,
+              years_of_experience,
             };
             const result = onChange(modelFields);
             value = result?.technology ?? value;
@@ -141,30 +153,63 @@ export default function SkillCreateForm(props) {
         hasError={errors.technology?.hasError}
         {...getOverrideProps(overrides, "technology")}
       ></TextField>
-      <TextField
-        label="Proficiency"
-        isRequired={true}
-        isReadOnly={false}
-        value={proficiency}
+      <SwitchField
+        label="Is relevant"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={isRelevant}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = e.target.checked;
           if (onChange) {
             const modelFields = {
               technology,
-              proficiency: value,
+              isRelevant: value,
+              years_of_experience,
             };
             const result = onChange(modelFields);
-            value = result?.proficiency ?? value;
+            value = result?.isRelevant ?? value;
           }
-          if (errors.proficiency?.hasError) {
-            runValidationTasks("proficiency", value);
+          if (errors.isRelevant?.hasError) {
+            runValidationTasks("isRelevant", value);
           }
-          setProficiency(value);
+          setIsRelevant(value);
         }}
-        onBlur={() => runValidationTasks("proficiency", proficiency)}
-        errorMessage={errors.proficiency?.errorMessage}
-        hasError={errors.proficiency?.hasError}
-        {...getOverrideProps(overrides, "proficiency")}
+        onBlur={() => runValidationTasks("isRelevant", isRelevant)}
+        errorMessage={errors.isRelevant?.errorMessage}
+        hasError={errors.isRelevant?.hasError}
+        {...getOverrideProps(overrides, "isRelevant")}
+      ></SwitchField>
+      <TextField
+        label="Years of experience"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={years_of_experience}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              technology,
+              isRelevant,
+              years_of_experience: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.years_of_experience ?? value;
+          }
+          if (errors.years_of_experience?.hasError) {
+            runValidationTasks("years_of_experience", value);
+          }
+          setYears_of_experience(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("years_of_experience", years_of_experience)
+        }
+        errorMessage={errors.years_of_experience?.errorMessage}
+        hasError={errors.years_of_experience?.hasError}
+        {...getOverrideProps(overrides, "years_of_experience")}
       ></TextField>
       <Flex
         justifyContent="space-between"
