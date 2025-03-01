@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Minus, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import type { Schema } from "amplify/data/resource";
 import ProfileUpdateForm from "ui-components/ProfileUpdateForm";
 import ProfileCreateForm from "ui-components/ProfileCreateForm";
 import { generateClient } from "aws-amplify/data";
@@ -14,8 +13,9 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { IconType } from "react-icons";
 import { SiLinkedin, SiGithub, SiX, SiStackoverflow } from "react-icons/si";
 import { Copy } from "lucide-react";
+import { useData } from "@/context/DataContext";
 
-const client = generateClient<Schema>();
+const client = generateClient(); // used for mutations like delete
 
 // Map social types to icon components
 const socialIcons: Record<string, IconType> = {
@@ -25,25 +25,23 @@ const socialIcons: Record<string, IconType> = {
   stackoverflow: SiStackoverflow,
 };
 
-// A small component to render a single social icon.
 interface SocialIconProps {
   type: string;
   url: string;
 }
+
 const SocialIcon: React.FC<SocialIconProps> = ({ type, url }) => {
   const [copied, setCopied] = useState(false);
   const IconComponent = socialIcons[type.toLowerCase()];
 
-  // When the copy button is clicked, copy the URL.
   const handleCopy = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the click from triggering the link action
+    e.stopPropagation();
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  // Clicking on the icon (outside the copy button) opens the URL.
   const handleClick = () => {
     window.open(url, "_blank");
   };
@@ -55,11 +53,9 @@ const SocialIcon: React.FC<SocialIconProps> = ({ type, url }) => {
       ) : (
         <span>{type}</span>
       )}
-      {/* Tooltip on hover */}
       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
         {copied ? "Copied!" : "Click to open, hover & click copy"}
       </div>
-      {/* Copy button appears on hover */}
       <button
         onClick={handleCopy}
         className="absolute top-0 right-0 hidden group-hover:block bg-white border border-gray-300 rounded-full p-1"
@@ -71,39 +67,30 @@ const SocialIcon: React.FC<SocialIconProps> = ({ type, url }) => {
 };
 
 export default function Profiles() {
+  // Use the profiles array from the DataProvider.
+  const { profiles } = useData();
   const [expandedProfiles, setExpandedProfiles] = useState<Set<string>>(
     new Set()
   );
-  const [profiles, setProfiles] = useState<Schema["Profile"]["type"][]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
+  // Delete operation: let the DataProvider subscription update the profiles.
   async function deleteProfile(id: string) {
     try {
-      const deletedProfile = await client.models.Profile.delete({ id });
-      return deletedProfile;
+      await client.models.Profile.delete({ id });
     } catch (error) {
       console.error("Failed to delete profile:", error);
-      return null;
     }
   }
 
-  useEffect(() => {
-    const sub = client.models.Profile.observeQuery().subscribe({
-      next: ({ items }) => {
-        setProfiles([...items]);
-      },
-    });
-    return () => sub.unsubscribe();
-  }, []);
-
   const handleDelete = (id: string) => {
-    setProfiles(profiles.filter((item) => item.id !== id));
+    deleteProfile(id);
+    // Optionally update the local expanded state.
     setExpandedProfiles((prev) => {
       const newSet = new Set(prev);
       newSet.delete(id);
       return newSet;
     });
-    deleteProfile(id);
   };
 
   const toggleExpand = (id: string) => {
@@ -128,13 +115,14 @@ export default function Profiles() {
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium">{item.name}</span>
                 <div className="flex space-x-1">
-                  {/* {item.socials((social) => (
-                    <SocialIcon
-                      key={social.type}
-                      type={social.type}
-                      url={social.url}
-                    />
-                  ))} */}
+                  {/* {item.socials &&
+                    item.socials.map((social) => (
+                      <SocialIcon
+                        key={social.type}
+                        type={social.type}
+                        url={social.url}
+                      />
+                    ))} */}
                 </div>
               </div>
             </div>

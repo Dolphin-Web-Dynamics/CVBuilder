@@ -12,7 +12,7 @@ import {
 import ProfileSelector from "@/components/ProfileSelector";
 import Experiences from "@/components/Experiences";
 import Profiles from "@/components/Profiles";
-import type { Schema } from "amplify/data/resource";
+import { DataProvider } from "@/context/DataContext";
 
 const sections = [
   { name: "Profiles", icon: UserIcon },
@@ -21,11 +21,9 @@ const sections = [
   { name: "Certifications", icon: CheckBadgeIcon },
 ];
 
-export default function Dashboard() {
+function DashboardContent() {
+  // const { selectedProfile, setSelectedProfile } = useData();
   const [activeSection, setActiveSection] = useState("Profiles");
-  const [selectedProfile, setSelectedProfile] = useState<
-    Schema["Profile"]["type"] | null
-  >(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const renderSection = () => {
@@ -33,12 +31,7 @@ export default function Dashboard() {
       case "Profiles":
         return <Profiles />;
       case "Experiences":
-        return <Experiences selectedProfile={selectedProfile} />;
-      // Uncomment and implement when ready:
-      // case 'Degrees':
-      //   return <DegreeSection selectedProfile={selectedProfile} />;
-      // case 'Certifications':
-      //   return <CertificationSection selectedProfile={selectedProfile} />;
+        return <Experiences />;
       default:
         return null;
     }
@@ -98,10 +91,7 @@ export default function Dashboard() {
         <main className="flex-1 p-6 overflow-auto">
           {activeSection !== "Profiles" && (
             <div className="w-full max-w-xs mb-4">
-              <ProfileSelector
-                selectedProfile={selectedProfile}
-                onProfileChange={setSelectedProfile}
-              />
+              <ProfileSelector />
             </div>
           )}
           {renderSection()}
@@ -116,5 +106,13 @@ export default function Dashboard() {
         ></div>
       )}
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <DataProvider>
+      <DashboardContent />
+    </DataProvider>
   );
 }

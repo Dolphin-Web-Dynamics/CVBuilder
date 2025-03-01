@@ -1,16 +1,18 @@
-// src/app/layout.tsx
-
 "use client";
 
 import "./globals.css";
 import { ResumeProvider } from "@/context/ResumeContext";
 import { Navbar } from "@/components/navbar";
-import { AmplifyProvider } from "@/context/AmplifyContext";
+import { DataProvider } from "@/context/DataContext";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { usePathname } from "next/navigation";
 
-// Define a single routes array with a "protected" flag
+import { Amplify } from "aws-amplify";
+import outputs from "amplify_outputs.json";
+
+Amplify.configure(outputs);
+
 const navRoutes = [
   { name: "Home", path: "/", protected: false },
   { name: "Resume", path: "/resume", protected: true },
@@ -23,8 +25,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
-  // Determine if the current route is protected
   const isProtected = navRoutes.some(
     (route) => route.protected && pathname.startsWith(route.path)
   );
@@ -33,13 +33,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gray-100 print:bg-white">
         <div className="min-h-screen flex flex-col">
-          {/* Pass the full navRoutes array to Navbar */}
           <Navbar
             className="px-4 print:hidden"
             routes={navRoutes}
             buttonLink="/resume"
           />
-          <AmplifyProvider>
+          <DataProvider>
             {isProtected ? (
               <Authenticator className="flex-1 py-2 mx-2">
                 <ResumeProvider>
@@ -51,7 +50,7 @@ export default function RootLayout({
                 <main className="flex-1 py-2 mx-2">{children}</main>
               </ResumeProvider>
             )}
-          </AmplifyProvider>
+          </DataProvider>
         </div>
       </body>
     </html>
