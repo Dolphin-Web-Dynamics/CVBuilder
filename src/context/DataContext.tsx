@@ -18,6 +18,8 @@ interface DataContextType {
   experiences: Schema["Experience"]["type"][];
   selectedProfile: Schema["Profile"]["type"] | null;
   setSelectedProfile: (profile: Schema["Profile"]["type"] | null) => void;
+  deleteProfile: (id: string) => Promise<void>;
+  deleteExperience: (id: string) => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -52,6 +54,29 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
+  // Optionally perform optimistic updates here:
+  const deleteProfile = async (id: string) => {
+    // Option 1: Optimistically update the state
+    setProfiles((prev) => prev.filter((p) => p.id !== id));
+    try {
+      await client.models.Profile.delete({ id });
+    } catch (error) {
+      console.error("Failed to delete profile:", error);
+      // Optionally: refetch or revert the change if deletion fails.
+    }
+  };
+
+  const deleteExperience = async (id: string) => {
+    // Option 1: Optimistically update the state
+    setExperiences((prev) => prev.filter((exp) => exp.id !== id));
+    try {
+      await client.models.Experience.delete({ id });
+    } catch (error) {
+      console.error("Failed to delete experience:", error);
+      // Optionally: refetch or revert the change if deletion fails.
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -59,6 +84,8 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         experiences,
         selectedProfile,
         setSelectedProfile,
+        deleteProfile,
+        deleteExperience,
       }}
     >
       {children}

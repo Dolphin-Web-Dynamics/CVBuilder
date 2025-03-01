@@ -68,30 +68,11 @@ const SocialIcon: React.FC<SocialIconProps> = ({ type, url }) => {
 
 export default function Profiles() {
   // Use the profiles array from the DataProvider.
-  const { profiles } = useData();
+  const { profiles, deleteProfile } = useData();
   const [expandedProfiles, setExpandedProfiles] = useState<Set<string>>(
     new Set()
   );
   const [showCreateForm, setShowCreateForm] = useState(false);
-
-  // Delete operation: let the DataProvider subscription update the profiles.
-  async function deleteProfile(id: string) {
-    try {
-      await client.models.Profile.delete({ id });
-    } catch (error) {
-      console.error("Failed to delete profile:", error);
-    }
-  }
-
-  const handleDelete = (id: string) => {
-    deleteProfile(id);
-    // Optionally update the local expanded state.
-    setExpandedProfiles((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(id);
-      return newSet;
-    });
-  };
 
   const toggleExpand = (id: string) => {
     setExpandedProfiles((prev) => {
@@ -143,8 +124,7 @@ export default function Profiles() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
-                onClick={() => handleDelete(item.id)}
+                onClick={() => deleteProfile(item.id)}
               >
                 <Minus className="h-4 w-4" />
                 <span className="sr-only">Delete item</span>
