@@ -10,7 +10,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import ProfileSelector from "@/components/ProfileSelector";
-import Experiences from "@/components/Experiences";
+import Experiences from "@/components/Experience";
+import Education from "@/components/Education";
+import Certifications from "@/components/Certifications";
 import Profiles from "@/components/Profiles";
 import { DataProvider } from "@/context/DataContext";
 
@@ -32,8 +34,10 @@ function DashboardContent() {
         return <Profiles />;
       case "Experience":
         return <Experiences />;
-      default:
-        return <Profiles />;
+      case "Education":
+        return <Education />;
+      case "Certifications":
+        return <Certifications />;
     }
   };
 

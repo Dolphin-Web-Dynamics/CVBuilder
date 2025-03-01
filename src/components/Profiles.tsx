@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProfileUpdateForm from "ui-components/ProfileUpdateForm";
 import ProfileCreateForm from "ui-components/ProfileCreateForm";
-import { generateClient } from "aws-amplify/data";
+// import { generateClient } from "aws-amplify/data";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 // Import social icons from react-icons
