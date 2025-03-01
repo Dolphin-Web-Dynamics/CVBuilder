@@ -15,9 +15,9 @@ import Profiles from "@/components/Profiles";
 import { DataProvider } from "@/context/DataContext";
 
 const sections = [
-  { name: "Profiles", icon: UserIcon },
-  { name: "Experiences", icon: BriefcaseIcon },
-  { name: "Degrees", icon: AcademicCapIcon },
+  { name: "Profile", icon: UserIcon },
+  { name: "Experience", icon: BriefcaseIcon },
+  { name: "Education", icon: AcademicCapIcon },
   { name: "Certifications", icon: CheckBadgeIcon },
 ];
 
@@ -28,12 +28,12 @@ function DashboardContent() {
 
   const renderSection = () => {
     switch (activeSection) {
-      case "Profiles":
+      case "Profile":
         return <Profiles />;
-      case "Experiences":
+      case "Experience":
         return <Experiences />;
       default:
-        return null;
+        return <Profiles />;
     }
   };
 
