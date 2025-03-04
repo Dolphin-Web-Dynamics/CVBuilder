@@ -17,6 +17,7 @@ const navRoutes = [
   { name: "Home", path: "/", protected: false },
   { name: "Resume", path: "/resume", protected: true },
   { name: "Dashboard", path: "/dashboard", protected: true },
+  { name: "Example", path: "/example", protected: false },
 ];
 
 export default function RootLayout({
@@ -33,11 +34,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gray-100 print:bg-white">
         <div className="min-h-screen flex flex-col">
-          <Navbar
+          {/* <Navbar
             className="px-4 print:hidden"
             routes={navRoutes}
             buttonLink="/resume"
-          />
+          /> */}
           <DataProvider>
             {isProtected ? (
               <Authenticator className="flex-1 py-2 mx-2">
